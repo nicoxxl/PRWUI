@@ -1,0 +1,1 @@
+rm -r dist prwui/__pycache__ MANIFEST build 
