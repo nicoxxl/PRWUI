@@ -143,7 +143,11 @@ MAGIC_JS = '''setTimeout(function() {
 
 
     ws.onopen = function() {
-        ws.send('{"hello":"world"}');
+        ws.send(JSON.stringify(
+            {
+                type: '@@browser/init',
+            }
+        ));
     }
     ws.onmessage = function (evt) { 
         var t0 = performance.now();
@@ -157,10 +161,16 @@ MAGIC_JS = '''setTimeout(function() {
         var t1 = performance.now();
         console.log('timing', t1-t0, t1-t_ev);
     };
-    /* setInterval(function() {
+    ws.onerror = function(err) {
+        console.error('Socket encountered error: ', err.message, 'Closing socket');
+        ws.close();
+    };
+    /* 
+    setInterval(function() {
+        t_ev = performance.now();
         ws.send('{}');
         console.log('plop');
-    }, 1000); */
+    }, 300);/* */
 });'''
 
 class PageManager:
